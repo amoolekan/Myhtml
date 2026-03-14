@@ -17,20 +17,7 @@ steps:
 - checkout: self
   displayName: 'Checkout GitHub repository'
 
-# Step 2: (Optional) Install PHP 8.4 if needed
-# Uncomment this section if you have composer dependencies
-# - task: UsePHPVersion@0
-#   inputs:
-#     version: '8.4'
-#
-# - script: |
-#     php -v
-#     if [ -f composer.json ]; then
-#       composer install --no-dev --prefer-dist
-#     fi
-#   displayName: 'Install PHP dependencies'
-
-# Step 3: Deploy entire repo folder directly to Azure App Service
+# Step 2: Deploy entire repo folder directly to Azure App Service
 - task: AzureWebApp@1
   inputs:
     azureSubscription: '$(azureSubscription)'
