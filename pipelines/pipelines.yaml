@@ -18,8 +18,8 @@ steps:
   #    versionSpec: '8.4'
   #  displayName: "Set PHP version"
 
-  - script: apt update && apt install -y zip
-    displayName: 'Install zip utility'
+  #- script: sudo yum update -y && sudo yum install -y zip
+  #  displayName: 'Update system and install zip'
 
   - task: ArchiveFiles@2
     displayName: "Archive project files"
