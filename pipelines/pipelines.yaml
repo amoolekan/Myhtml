@@ -1,0 +1,9 @@
+trigger:
+- none
+
+pool:
+  name: azure_pool
+
+steps:
+- script: echo "Hello, world!"
+  displayName: 'Print Hello World'
