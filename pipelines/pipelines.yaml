@@ -2,6 +2,7 @@
 
 trigger:
   - main   # or your default branch
+  - branch3
 
 pool:
   name: azure_pool
@@ -16,6 +17,9 @@ steps:
   ##  inputs:
   #    versionSpec: '8.4'
   #  displayName: "Set PHP version"
+
+  - script: sudo apt-get update && sudo apt-get install -y zip
+    displayName: 'Install zip utility'
 
   - task: ArchiveFiles@2
     displayName: "Archive project files"
