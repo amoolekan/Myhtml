@@ -18,7 +18,7 @@ steps:
   #    versionSpec: '8.4'
   #  displayName: "Set PHP version"
 
-  - script: sudo apt-get update && sudo apt-get install -y zip
+  - script: sudo apt update && sudo apt install -y zip
     displayName: 'Install zip utility'
 
   - task: ArchiveFiles@2
