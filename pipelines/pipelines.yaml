@@ -18,7 +18,7 @@ steps:
   #    versionSpec: '8.4'
   #  displayName: "Set PHP version"
 
-  - script: sudo yum update -y && sudo yum install -y zip
+  - script: yum update -y && yum install -y zip
     displayName: 'Update system and install zip'
 
   - script: unzip --version
