@@ -1,9 +1,41 @@
+
+
 trigger:
-- none
+  - main   # or your default branch
 
 pool:
   name: azure_pool
 
+variables:
+  azureSubscription: "MyUMI"
+  appName: "myapp002"
+  packagePath: "$(System.DefaultWorkingDirectory)"
+
 steps:
-- script: echo "Hello, world!"
-  displayName: 'Print Hello World'
+  - task: UsePhpVersion@0
+    inputs:
+      versionSpec: '8.4'
+    displayName: "Set PHP version"
+
+  - task: ArchiveFiles@2
+    displayName: "Archive project files"
+    inputs:
+      rootFolderOrFile: "$(System.DefaultWorkingDirectory)"
+      includeRootFolder: false
+      archiveType: zip
+      archiveFile: "$(Build.ArtifactStagingDirectory)/app.zip"
+      replaceExistingArchive: true
+
+  - task: PublishBuildArtifacts@1
+    displayName: "Publish artifact"
+    inputs:
+      PathtoPublish: "$(Build.ArtifactStagingDirectory)"
+      ArtifactName: "drop"
+      publishLocation: "Container"
+
+  - task: AzureWebApp@1
+    displayName: "Deploy to Azure Web App"
+    inputs:
+      azureSubscription: "$(azureSubscription)"
+      appName: "$(appName)"
+      package: "$(Build.ArtifactStagingDirectory)/app.zip"
