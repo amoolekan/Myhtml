@@ -1,31 +1,39 @@
-
-
 # File: azure-pipelines.yml
 trigger:
   branches:
     include:
-      - main  # or your default branch
+      - main
       - branch3
 
 pool:
   name: 'azure_pool'
 
 variables:
-  azureSubscription: 'MyUMI' # Set up in DevOps Service Connections
+  azureSubscription: 'MyUMI' # DevOps Service Connection
   appName: 'myapp002'
-  #resourceGroup: '<YOUR-RESOURCE-GROUP-NAME>'
-  packagePath: '$(Build.SourcesDirectory)'
 
 steps:
 # Step 1: Checkout code from GitHub
-- task: Checkout@2
+- checkout: self
   displayName: 'Checkout GitHub repository'
 
+# Step 2: (Optional) Install PHP 8.4 if needed
+# Uncomment this section if you have composer dependencies
+# - task: UsePHPVersion@0
+#   inputs:
+#     version: '8.4'
+#
+# - script: |
+#     php -v
+#     if [ -f composer.json ]; then
+#       composer install --no-dev --prefer-dist
+#     fi
+#   displayName: 'Install PHP dependencies'
 
-# Step 4: Deploy to Azure App Service
+# Step 3: Deploy entire repo folder directly to Azure App Service
 - task: AzureWebApp@1
   inputs:
     azureSubscription: '$(azureSubscription)'
-    appType: 'webAppLinux' # since PHP is on Linux runtime
+    appType: 'webAppLinux'
     appName: '$(appName)'
     package: '$(Build.SourcesDirectory)'
