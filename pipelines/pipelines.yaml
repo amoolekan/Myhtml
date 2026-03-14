@@ -1,51 +1,26 @@
-
-
+# File: azure-pipelines.yml
 trigger:
-  - main   # or your default branch
-  - branch3
+  branches:
+    include:
+      - main  # or your default branch
+      - branch3
 
 pool:
-  name: azure_pool
+  name: azure_pool # Can also be Red Hat self-hosted if you prefer
 
 variables:
-  azureSubscription: "MyUMI"
-  appName: "myapp002"
-  packagePath: "$(System.DefaultWorkingDirectory)"
+  azureSubscription: 'MyUMI' # DevOps service connection
+  appName: 'myapp002'
 
 steps:
-  #- task: UsePhpVersion@0
-  ##  inputs:
-  #    versionSpec: '8.4'
-  #  displayName: "Set PHP version"
+# Step 1: Checkout code from GitHub
+- task: Checkout@2
+  displayName: 'Checkout GitHub repository'
 
-  - script: yum update -y && yum install -y zip
-    displayName: 'Update system and install zip'
-
-  - script: unzip --version
-    displayName: 'Update system and install zip'
-
-  - script: zip --version
-    displayName: 'Update system and install zip'
-
-  - task: ArchiveFiles@2
-    displayName: "Archive project files"
-    inputs:
-      rootFolderOrFile: "$(System.DefaultWorkingDirectory)"
-      includeRootFolder: false
-      archiveType: zip
-      archiveFile: "$(Build.ArtifactStagingDirectory)/app.zip"
-      replaceExistingArchive: true
-
-  - task: PublishBuildArtifacts@1
-    displayName: "Publish artifact"
-    inputs:
-      PathtoPublish: "$(Build.ArtifactStagingDirectory)"
-      ArtifactName: "drop"
-      publishLocation: "Container"
-
-  - task: AzureWebApp@1
-    displayName: "Deploy to Azure Web App"
-    inputs:
-      azureSubscription: "$(azureSubscription)"
-      appName: "$(appName)"
-      package: "$(Build.ArtifactStagingDirectory)/app.zip"
+# Step 3: Deploy entire repo folder directly to Azure App Service
+- task: AzureWebApp@1
+  inputs:
+    azureSubscription: '$(azureSubscription)'
+    appType: 'webAppLinux'
+    appName: '$(appName)'
+    package: '$(Build.SourcesDirectory)'   # Deploys all files in repo
