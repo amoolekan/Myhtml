@@ -12,10 +12,10 @@ variables:
   packagePath: "$(System.DefaultWorkingDirectory)"
 
 steps:
-  - task: UsePhpVersion@0
-    inputs:
-      versionSpec: '8.4'
-    displayName: "Set PHP version"
+  #- task: UsePhpVersion@0
+  ##  inputs:
+  #    versionSpec: '8.4'
+  #  displayName: "Set PHP version"
 
   - task: ArchiveFiles@2
     displayName: "Archive project files"
