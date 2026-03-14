@@ -1,3 +1,5 @@
+
+
 # File: azure-pipelines.yml
 trigger:
   branches:
@@ -6,21 +8,24 @@ trigger:
       - branch3
 
 pool:
-  name: azure_pool # Can also be Red Hat self-hosted if you prefer
+  name: 'azure_pool'
 
 variables:
-  azureSubscription: 'MyUMI' # DevOps service connection
+  azureSubscription: 'MyUMI' # Set up in DevOps Service Connections
   appName: 'myapp002'
+  #resourceGroup: '<YOUR-RESOURCE-GROUP-NAME>'
+  packagePath: '$(Build.SourcesDirectory)'
 
 steps:
 # Step 1: Checkout code from GitHub
 - task: Checkout@2
   displayName: 'Checkout GitHub repository'
 
-# Step 3: Deploy entire repo folder directly to Azure App Service
+
+# Step 4: Deploy to Azure App Service
 - task: AzureWebApp@1
   inputs:
     azureSubscription: '$(azureSubscription)'
-    appType: 'webAppLinux'
+    appType: 'webAppLinux' # since PHP is on Linux runtime
     appName: '$(appName)'
-    package: '$(Build.SourcesDirectory)'   # Deploys all files in repo
+    package: '$(Build.SourcesDirectory)'
